@@ -7,10 +7,13 @@ from fitter import get_common_distributions
 import math as mt
 import numpy as np
 
+## This function will split the outliers, giving us the extreme and no extreme data. The data between the upper and lower bound will be analysed in the 
+## probability distribution function. Here we use the interquartilic range method
 
 def Outliers(DataframeCol):
-    #This function will split the outliers, giving us the extreme and no extreme data. The data between the upper and lower bound, will be analysed in the 
-    #probability distribution function. Here we use the interquartilic range method
+    '''
+    Input, column of dataframe. Output, outliers and normal data. 
+    '''
     test = DataframeCol.dropna()
     outliers = []
     q1 = test.quantile(0.25)
@@ -25,16 +28,21 @@ def Outliers(DataframeCol):
 
 df_test = Outliers(DataframeCol)
 
+
+## The variables of this function are the column of the dataframe to analyse, the common distrubutions for fitter 'cauchy', 'chi2', 'expon', 
+## 'exponpow', 'gamma', 'lognorm','norm', 'powerlaw','rayleigh', 'uniform'
 def prob_dist(df_test):
-    #The variables of this function are the column of the dataframe to analyse, the common distrubutions for fitter 'cauchy', 'chi2', 'expon', 
-    #'exponpow', 'gamma', 'lognorm','norm', 'powerlaw','rayleigh', 'uniform'
+    '''
+    
+    '''
     test = df_test
     dist = get_common_distributions()
     tester = test
     
+## Here we iterate over all the distributions the dist varaible has. We will be testing the distribution untill one of them gets acceped by the 
+## Kolmogrov-Smirnov goodness test. We use this specific test, given that other test are not precise for n > 5000. 
     for i in range(len(dist)):
-        #Here we iterate over all the distributions the dist varaible has. We will be testing the distribution untill one of them gets acceped by the 
-        #Kolmogrov-Smirnov goodness test. We use this specific test, given that other test are not precise for n > 5000. 
+        
         
             f = Fitter(tester, timeout = 120, distributions= dist)
             f.fit()
