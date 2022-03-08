@@ -15,7 +15,6 @@ def Outliers(DataframeCol):
     Input, column of dataframe. Output, outliers and normal data. 
     '''
     test = DataframeCol.dropna()
-    outliers = []
     q1 = test.quantile(0.25)
     q3 = test.quantile(0.75)
     iqr = q3 - q1
@@ -26,7 +25,6 @@ def Outliers(DataframeCol):
     
     return(noOutLiers, Outliers)
 
-df_test = Outliers(DataframeCol)
 
 
 ## The variables of this function are the column of the dataframe to analyse, the common distrubutions for fitter 'cauchy', 'chi2', 'expon', 
@@ -68,8 +66,9 @@ def prob_dist(df_test):
             #Here the Goodness test was not accepted. So we have to delete this distribution and re-run the test. If we do not delet the distribution, we will get the 
             #same result for every i in the loop. So, at the end we would get nothing. 
                 dist.remove(distToTest)
-         
 
+         
+df_test = Outliers(DataframeCol)
 prob_dist(df_test[0])
 #the output will be like this:
 	#NameOfTheColumn
